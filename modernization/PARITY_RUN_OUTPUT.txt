@@ -1,0 +1,23 @@
+# Parity run 2026-10-26T14:01:17Z
+java: openjdk version "21.0.12.1" 2026-08-18
+golden: 2319 lines in 6 files (headers included)
+command: (cd java/policy-term-service && mvn -B test)
+---
+[INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.095 s -- in com.example.policyterm.parity.InvalidInputParityTest
+[INFO] Tests run: 52, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.076 s -- in com.example.policyterm.parity.PolicyTermParityTest
+[INFO] Tests run: 896, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.450 s -- in com.example.policyterm.parity.ChaltenCoreDateParityTest
+[INFO] Tests run: 208, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.089 s -- in com.example.policyterm.parity.RenewalWindowParityTest
+[INFO] Tests run: 988, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.321 s -- in com.example.policyterm.parity.CancellationParityTest
+[INFO] Tests run: 160, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.053 s -- in com.example.policyterm.parity.HomeownersPremiumParityTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.653 s -- in com.example.policyterm.api.PolicyTermControllerTest
+[INFO] Tests run: 2315, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+---
+rule (test class)                 total   pass   fail  error
+api.PolicyTermControllerTest          2      2      0      0
+parity.CancellationParityTest       988    988      0      0
+parity.ChaltenCoreDateParityTest    896    896      0      0
+parity.HomeownersPremiumParityTest    160    160      0      0
+parity.InvalidInputParityTest         9      9      0      0
+parity.PolicyTermParityTest          52     52      0      0
+parity.RenewalWindowParityTest      208    208      0      0

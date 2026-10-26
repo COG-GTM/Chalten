@@ -1,1 +1,4 @@
 .vscode/*
+
+# Headless Pharo working directory for modernization/scripts/run_pharo.sh
+modernization/.pharo/

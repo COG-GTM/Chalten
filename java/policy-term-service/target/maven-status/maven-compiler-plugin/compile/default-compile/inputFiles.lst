@@ -1,0 +1,10 @@
+/home/ubuntu/repos/Chalten/java/policy-term-service/src/main/java/com/example/policyterm/PolicyTermServiceApplication.java
+/home/ubuntu/repos/Chalten/java/policy-term-service/src/main/java/com/example/policyterm/api/PolicyTermController.java
+/home/ubuntu/repos/Chalten/java/policy-term-service/src/main/java/com/example/policyterm/cli/PolicyTermCli.java
+/home/ubuntu/repos/Chalten/java/policy-term-service/src/main/java/com/example/policyterm/dates/ChaltenDates.java
+/home/ubuntu/repos/Chalten/java/policy-term-service/src/main/java/com/example/policyterm/rating/HomeownersPremiumCalculator.java
+/home/ubuntu/repos/Chalten/java/policy-term-service/src/main/java/com/example/policyterm/rating/Money.java
+/home/ubuntu/repos/Chalten/java/policy-term-service/src/main/java/com/example/policyterm/rating/PolicyTerm.java
+/home/ubuntu/repos/Chalten/java/policy-term-service/src/main/java/com/example/policyterm/rating/ProRataEarnedPremiumCalculator.java
+/home/ubuntu/repos/Chalten/java/policy-term-service/src/main/java/com/example/policyterm/rating/RenewalOfferWindow.java
+/home/ubuntu/repos/Chalten/java/policy-term-service/src/main/java/com/example/policyterm/rating/ShortRateCancellationTable.java
