@@ -1,0 +1,10 @@
+rule,smalltalk_expression,expected_error
+PolicyTerm effectiveOn:lastingMonths:,PolicyTerm effectiveOn: referenceDate lastingMonths: 7,InstanceCreationFailed
+PolicyTerm effectiveOn:lastingMonths:,PolicyTerm effectiveOn: referenceDate lastingMonths: 0,InstanceCreationFailed
+ProRataEarnedPremiumCalculator earnedPremiumOf:cancelledOn:,( ProRataEarnedPremiumCalculator for: ( PolicyTerm twelveMonthsFrom: referenceDate ) ) earnedPremiumOf: -1 cancelledOn: referenceDate,AssertionFailed
+RenewalOfferWindow for:openingDaysBeforeExpiration:,RenewalOfferWindow for: ( PolicyTerm twelveMonthsFrom: referenceDate ) openingDaysBeforeExpiration: 0,InstanceCreationFailed
+HomeownersPremiumCalculator deductibleCreditForDwelling:deductible:,homeCalculator deductibleCreditForDwelling: 100000 deductible: 750,ObjectNotFound
+HomeownersPremiumCalculator dwellingPremiumFor:,homeCalculator dwellingPremiumFor: -100,AssertionFailed
+ShortRateCancellationTable addBandUpTo:retaining:,ShortRateCancellationTable new addBandUpTo: 10 retaining: 17; addBandUpTo: 5 retaining: 10,AssertionFailed
+GregorianMonthOfYear dateAt:,dateAt value: 2025 value: 2 value: 29,InstanceCreationFailed
+GregorianMonthOfYear dateAt:,dateAt value: 2025 value: 4 value: 31,InstanceCreationFailed

@@ -96,10 +96,22 @@ BaselineOfChalten >> setUpDeploymentPackages: spec [
   self
     setUpCorePackages: spec;
     setUpHebrewPackages: spec;
-    setUpIslamicPackages: spec.
+    setUpIslamicPackages: spec;
+    setUpPersonalLinesPackages: spec.
   spec group: 'Deployment' with: 'Core'.
   spec group: 'Deployment' with: 'Hebrew'.
-  spec group: 'Deployment' with: 'Islamic'
+  spec group: 'Deployment' with: 'Islamic'.
+  spec group: 'Deployment' with: 'PersonalLines'
+]
+
+{ #category : 'baselines' }
+BaselineOfChalten >> setUpPersonalLinesPackages: spec [
+
+  "SYNTHETIC demonstration package: personal lines policy-period rules built on Chalten dates."
+
+  spec
+    package: 'PersonalLines-Rating' with: [ spec requires: 'Core' ];
+    group: 'PersonalLines' with: 'PersonalLines-Rating'
 ]
 
 { #category : 'baselines' }
@@ -138,7 +150,11 @@ BaselineOfChalten >> setUpTestPackages: spec [
     package: 'Chalten-Hebrew-Calendar-Tests' with: [ spec requires: #( 'Hebrew' 'Chalten-SUnit' ) ];
     group: 'Tests' with: 'Chalten-Hebrew-Calendar-Tests';
     package: 'Chalten-Islamic-Calendar-Tests' with: [ spec requires: #( 'Islamic' 'Chalten-SUnit' ) ];
-    group: 'Tests' with: 'Chalten-Islamic-Calendar-Tests'
+    group: 'Tests' with: 'Chalten-Islamic-Calendar-Tests'.
+  spec
+    package: 'PersonalLines-Rating-Tests'
+    with: [ spec requires: #( 'PersonalLines-Rating' 'Chalten-SUnit' ) ];
+    group: 'Tests' with: 'PersonalLines-Rating-Tests'
 ]
 
 { #category : 'baselines' }
