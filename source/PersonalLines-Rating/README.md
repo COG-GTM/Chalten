@@ -31,6 +31,7 @@ not modified.
 
 ## Where the rules are documented
 
-`docs/modernization/RULE_CATALOG.md` Part B lists every rule with its
-selector and edge cases. `modernization/golden/` holds the Pharo-generated
+`docs/modernization/RULE_CATALOG.md` Part B lists all 22 rules of this
+package with file, line, selector and edge cases (Part A lists the 31
+Chalten-Core rules). `modernization/golden/` holds the Pharo-generated
 expected outputs, and `java/policy-term-service` holds the Java port.

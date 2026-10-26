@@ -1,16 +1,19 @@
 # Business rule catalog: Chalten-Core and PersonalLines-Rating
 
-This catalog lists the behavioural rules found in the Smalltalk source of this
-repository. It was produced by reading the Tonel source under `source/`, not by
-an automated converter. Every row cites the class and method the rule was read
-from, so each statement can be checked against the code in a few seconds.
+This catalog lists 53 behavioural rules found in the Smalltalk source of this
+repository: 31 in the real `Chalten-Core` library (Part A) and 22 in the
+synthetic `PersonalLines-Rating` package (Part B). It was produced by reading
+the Tonel source under `source/`, not by an automated converter. Every row
+cites the class and method the rule was read from, so each statement can be
+checked against the code in a few seconds.
 
 How to read a row:
 
 - **Rule**: one plain-English sentence describing the behaviour.
 - **Edge cases**: the boundaries the method handles explicitly.
-- **Smalltalk**: `path/under/source:line` followed by the method selector.
-  Line numbers refer to the `release-candidate` branch at the time of writing.
+- **Smalltalk**: `path/under/source:line` followed by the method selector, for
+  every row in both parts. Line numbers refer to this pull request's branch
+  at the time of writing (Part A files are unchanged from `release-candidate`).
 - **Java**: the method in `java/policy-term-service` derived from it, or
   `not ported` when the rule is outside the scope of the port.
 - **Golden**: the file under `modernization/golden/` whose rows exercise the
@@ -82,7 +85,8 @@ real insurer's products or rates.
 
 ## Part B: PersonalLines-Rating (SYNTHETIC) policy-period rules
 
-All rows below cite `source/PersonalLines-Rating/`. The package is marked
+All 22 rows below cite `source/PersonalLines-Rating/` with file, line and
+selector. The package is marked
 SYNTHETIC in every class comment and in its README. It exists to show the
 method, not to describe any real product.
 
@@ -90,48 +94,48 @@ method, not to describe any real product.
 
 | # | Rule | Edge cases | Smalltalk | Java | Golden |
 |---|------|------------|-----------|------|--------|
-| B1.1 | A policy term lasts exactly 6 or 12 months from its effective date. | 0, 7 or any other length fails with `InstanceCreationFailed`. | `PersonalLines-Rating/PolicyTerm.class.st` `PolicyTerm class>>effectiveOn:lastingMonths:`, `allowedTermsInMonths`, `sixMonthsFrom:`, `twelveMonthsFrom:` | `PolicyTerm.effectiveOn`, `sixMonthsFrom`, `twelveMonthsFrom` | `policy_terms.csv`, `invalid_inputs.csv` |
-| B1.2 | The expiration date is the same day number in the anniversary month (A2.5); if that month is shorter, the last day of the month is used. | Aug 31 + 6 months expires Feb 28 or Feb 29; Feb 29 + 12 months expires Feb 28; May 31 + 6 months expires Nov 30. | `PolicyTerm.class.st` `PolicyTerm>>calculateExpirationDate` | `PolicyTerm.calculateExpirationDate` | `policy_terms.csv` (`expiration_date`) |
-| B1.3 | The number of days in the term is `expiration - effective` (A3.5): 365 or 366 for annual terms, 181 to 184 for six-month terms. | Terms spanning Feb 29 have one more day. | `PolicyTerm.class.st` `PolicyTerm>>numberOfDays` | `PolicyTerm.numberOfDays` | `policy_terms.csv` (`term_days`) |
-| B1.4 | Coverage is in force from the effective date up to but not including the expiration date; the last date in force is the day before expiration. | The expiration date itself is not covered. | `PolicyTerm.class.st` `PolicyTerm>>includes:`, `PolicyTerm>>lastDateInForce` | `PolicyTerm.includes`, `lastDateInForce` | `cancellations.csv` (`in_force`), `policy_terms.csv` |
-| B1.5 | Days in force at a date: 0 on or before the effective date, the whole term on or after expiration, otherwise `date - effective`. | Never negative, never exceeds the term; a cancellation dated before inception counts as zero days. | `PolicyTerm.class.st` `PolicyTerm>>daysInForceAt:`, `PolicyTerm>>elapsedFractionAt:` | `PolicyTerm.daysInForceAt` | `cancellations.csv` (`days_in_force`) |
+| B1.1 | A policy term lasts exactly 6 or 12 months from its effective date. | 0, 7 or any other length fails with `InstanceCreationFailed`. | `PersonalLines-Rating/PolicyTerm.class.st:32` `PolicyTerm class>>effectiveOn:lastingMonths:`, `:26` `PolicyTerm class>>allowedTermsInMonths`, `:43` `PolicyTerm class>>sixMonthsFrom:`, `:49` `PolicyTerm class>>twelveMonthsFrom:` | `PolicyTerm.effectiveOn`, `sixMonthsFrom`, `twelveMonthsFrom` | `policy_terms.csv`, `invalid_inputs.csv` |
+| B1.2 | The expiration date is the same day number in the anniversary month (A2.5); if that month is shorter, the last day of the month is used. | Aug 31 + 6 months expires Feb 28 or Feb 29; Feb 29 + 12 months expires Feb 28; May 31 + 6 months expires Nov 30. | `PersonalLines-Rating/PolicyTerm.class.st:55` `PolicyTerm>>calculateExpirationDate` | `PolicyTerm.calculateExpirationDate` | `policy_terms.csv` (`expiration_date`) |
+| B1.3 | The number of days in the term is `expiration - effective` (A3.5): 365 or 366 for annual terms, 181 to 184 for six-month terms. | Terms spanning Feb 29 have one more day. | `PersonalLines-Rating/PolicyTerm.class.st:119` `PolicyTerm>>numberOfDays` | `PolicyTerm.numberOfDays` | `policy_terms.csv` (`term_days`) |
+| B1.4 | Coverage is in force from the effective date up to but not including the expiration date; the last date in force is the day before expiration. | The expiration date itself is not covered. | `PersonalLines-Rating/PolicyTerm.class.st:93` `PolicyTerm>>includes:`, `:113` `PolicyTerm>>lastDateInForce` | `PolicyTerm.includes`, `lastDateInForce` | `cancellations.csv` (`in_force`), `policy_terms.csv` |
+| B1.5 | Days in force at a date: 0 on or before the effective date, the whole term on or after expiration, otherwise `date - effective`. | Never negative, never exceeds the term; a cancellation dated before inception counts as zero days. | `PersonalLines-Rating/PolicyTerm.class.st:65` `PolicyTerm>>daysInForceAt:`, `:81` `PolicyTerm>>elapsedFractionAt:` | `PolicyTerm.daysInForceAt` | `cancellations.csv` (`days_in_force`) |
 
 ### B2. Pro-rata earned premium
 
 | # | Rule | Edge cases | Smalltalk | Java | Golden |
 |---|------|------------|-----------|------|--------|
-| B2.1 | Earned premium on cancellation is `written * daysInForce / termDays`, computed exactly and rounded once to cents, half away from zero. | Written premium 0 earns 0; premiums of 0.01 round to 0.00 or 0.01 depending on the fraction. | `PersonalLines-Rating/ProRataEarnedPremiumCalculator.class.st` `ProRataEarnedPremiumCalculator>>earnedPremiumOf:cancelledOn:`, `ProRataEarnedPremiumCalculator class>>roundToCents:` | `ProRataEarnedPremiumCalculator.earnedPremium`, `Money.divideToCents` | `cancellations.csv` (`pro_rata_earned`) |
-| B2.2 | Unearned premium is the written premium minus the earned premium. | Earned plus unearned always equals written, to the cent. | `ProRataEarnedPremiumCalculator.class.st` `ProRataEarnedPremiumCalculator>>unearnedPremiumOf:cancelledOn:` | `ProRataEarnedPremiumCalculator.unearnedPremium` | `cancellations.csv` (`pro_rata_unearned`) |
-| B2.3 | Cancelling on or before the effective date is a flat cancellation: nothing is earned. Cancelling on or after expiration earns everything. | Follows from B1.5. | `ProRataEarnedPremiumCalculator.class.st` (via `PolicyTerm>>daysInForceAt:`) | same | `cancellations.csv` (offsets -30, -1, 0, 365, 366, 400) |
-| B2.4 | A negative written premium is rejected. | `AssertionFailed`. | `ProRataEarnedPremiumCalculator.class.st` `ProRataEarnedPremiumCalculator>>assertIsValidPremium:` | `Money.requireNonNegative` | `invalid_inputs.csv` |
+| B2.1 | Earned premium on cancellation is `written * daysInForce / termDays`, computed exactly and rounded once to cents, half away from zero. | Written premium 0 earns 0; premiums of 0.01 round to 0.00 or 0.01 depending on the fraction. | `PersonalLines-Rating/ProRataEarnedPremiumCalculator.class.st:46` `ProRataEarnedPremiumCalculator>>earnedPremiumOf:cancelledOn:`, `:30` `ProRataEarnedPremiumCalculator class>>roundToCents:` | `ProRataEarnedPremiumCalculator.earnedPremium`, `Money.divideToCents` | `cancellations.csv` (`pro_rata_earned`) |
+| B2.2 | Unearned premium is the written premium minus the earned premium. | Earned plus unearned always equals written, to the cent. | `PersonalLines-Rating/ProRataEarnedPremiumCalculator.class.st:66` `ProRataEarnedPremiumCalculator>>unearnedPremiumOf:cancelledOn:` | `ProRataEarnedPremiumCalculator.unearnedPremium` | `cancellations.csv` (`pro_rata_unearned`) |
+| B2.3 | Cancelling on or before the effective date is a flat cancellation: nothing is earned. Cancelling on or after expiration earns everything. | Follows from B1.5. | `PersonalLines-Rating/PolicyTerm.class.st:65` `PolicyTerm>>daysInForceAt:` | same | `cancellations.csv` (offsets -30, -1, 0, 365, 366, 400) |
+| B2.4 | A negative written premium is rejected. | `AssertionFailed`. | `PersonalLines-Rating/ProRataEarnedPremiumCalculator.class.st:38` `ProRataEarnedPremiumCalculator>>assertIsValidPremium:` | `Money.requireNonNegative` | `invalid_inputs.csv` |
 
 ### B3. Short-rate cancellation table
 
 | # | Rule | Edge cases | Smalltalk | Java | Golden |
 |---|------|------------|-----------|------|--------|
-| B3.1 | The standard table has 20 bands of 5 percent of the term elapsed; each band names the percent of written premium retained (10, 17, 24, 31, 37, 43, 49, 55, 60, 65, 70, 75, 80, 84, 88, 91, 94, 97, 99, 100). | Bands must be added in increasing order; otherwise `AssertionFailed`. | `PersonalLines-Rating/ShortRateCancellationTable.class.st` `ShortRateCancellationTable class>>standard`, `ShortRateCancellationTable>>addBandUpTo:retaining:` | `ShortRateCancellationTable.standard`, `addBand` | `invalid_inputs.csv` |
-| B3.2 | The retained percentage is taken from the first band whose upper bound is greater than or equal to the exact percentage of the term elapsed (upper bound inclusive). | 73 of 365 days is exactly 20 percent and falls in the 20 percent band (31), not the 25 percent band. The comparison is exact (fractions), not floating point. | `ShortRateCancellationTable.class.st` `ShortRateCancellationTable>>retainedPercentageFor:cancelledOn:` | `ShortRateCancellationTable.retainedPercentage` (integer cross-multiplication) | `cancellations.csv` (`short_rate_pct`) |
-| B3.3 | Zero days in force is a flat cancellation and retains nothing, even though the first band starts at 10 percent. | Cancellation before or on the effective date. | `ShortRateCancellationTable.class.st` `ShortRateCancellationTable>>retainedPercentageFor:cancelledOn:` | same | `cancellations.csv` (`short_rate_pct` = 0) |
-| B3.4 | Short-rate earned premium is `written * retained / 100`, rounded to cents; the penalty is short-rate earned minus pro-rata earned. | Penalty is 0 for flat cancellations and for full terms. | `ShortRateCancellationTable.class.st` `ShortRateCancellationTable>>earnedPremiumOf:for:cancelledOn:`, `penaltyOf:for:cancelledOn:` | `ShortRateCancellationTable.earnedPremium`, `penalty` | `cancellations.csv` (`short_rate_earned`, `short_rate_penalty`) |
+| B3.1 | The standard table has 20 bands of 5 percent of the term elapsed; each band names the percent of written premium retained (10, 17, 24, 31, 37, 43, 49, 55, 60, 65, 70, 75, 80, 84, 88, 91, 94, 97, 99, 100). | Bands must be added in increasing order; otherwise `AssertionFailed`. | `PersonalLines-Rating/ShortRateCancellationTable.class.st:29` `ShortRateCancellationTable class>>standard`, `:56` `ShortRateCancellationTable>>addBandUpTo:retaining:` | `ShortRateCancellationTable.standard`, `addBand` | `invalid_inputs.csv` |
+| B3.2 | The retained percentage is taken from the first band whose upper bound is greater than or equal to the exact percentage of the term elapsed (upper bound inclusive). | 73 of 365 days is exactly 20 percent and falls in the 20 percent band (31), not the 25 percent band. The comparison is exact (fractions), not floating point. | `PersonalLines-Rating/ShortRateCancellationTable.class.st:92` `ShortRateCancellationTable>>retainedPercentageFor:cancelledOn:` | `ShortRateCancellationTable.retainedPercentage` (integer cross-multiplication) | `cancellations.csv` (`short_rate_pct`) |
+| B3.3 | Zero days in force is a flat cancellation and retains nothing, even though the first band starts at 10 percent. | Cancellation before or on the effective date. | `PersonalLines-Rating/ShortRateCancellationTable.class.st:92` `ShortRateCancellationTable>>retainedPercentageFor:cancelledOn:` | same | `cancellations.csv` (`short_rate_pct` = 0) |
+| B3.4 | Short-rate earned premium is `written * retained / 100`, rounded to cents; the penalty is short-rate earned minus pro-rata earned. | Penalty is 0 for flat cancellations and for full terms. | `PersonalLines-Rating/ShortRateCancellationTable.class.st:65` `ShortRateCancellationTable>>earnedPremiumOf:for:cancelledOn:`, `:80` `ShortRateCancellationTable>>penaltyOf:for:cancelledOn:` | `ShortRateCancellationTable.earnedPremium`, `penalty` | `cancellations.csv` (`short_rate_earned`, `short_rate_penalty`) |
 
 ### B4. Renewal offer window
 
 | # | Rule | Edge cases | Smalltalk | Java | Golden |
 |---|------|------------|-----------|------|--------|
-| B4.1 | The standard renewal window opens 45 days before the expiration date (A3.4) and closes on the last date in force. | The lead time must be positive (`InstanceCreationFailed`). | `PersonalLines-Rating/RenewalOfferWindow.class.st` `RenewalOfferWindow class>>standardFor:`, `for:openingDaysBeforeExpiration:`, `RenewalOfferWindow>>opensOn`, `closesOn` | `RenewalOfferWindow.standardFor`, `forTerm`, `opensOn`, `closesOn` | `renewal_windows.csv`, `policy_terms.csv` |
-| B4.2 | The window never opens before the policy's own effective date. | A 400-day lead time on a 6-month term opens on the effective date. | `RenewalOfferWindow.class.st` `RenewalOfferWindow>>opensOn` | `RenewalOfferWindow.opensOn` | `renewal_windows.csv` (`lead_days` = 400) |
-| B4.3 | The window is open on a date when `opensOn <= date <= closesOn`; it is closed on the expiration date. | Both ends inclusive. | `RenewalOfferWindow.class.st` `RenewalOfferWindow>>isOpenOn:` | `RenewalOfferWindow.isOpenOn` | `renewal_windows.csv` (four `open_*` columns) |
-| B4.4 | Days until the window opens is 0 once it is open, otherwise `opensOn - date`. | Counted with A3.5, so leap days are included. | `RenewalOfferWindow.class.st` `RenewalOfferWindow>>daysUntilOpeningFrom:` | `RenewalOfferWindow.daysUntilOpeningFrom` | `renewal_windows.csv` (`days_until_opening_from_effective`) |
+| B4.1 | The standard renewal window opens 45 days before the expiration date (A3.4) and closes on the last date in force. | The lead time must be positive (`InstanceCreationFailed`). | `PersonalLines-Rating/RenewalOfferWindow.class.st:34` `RenewalOfferWindow class>>standardFor:`, `:23` `RenewalOfferWindow class>>for:openingDaysBeforeExpiration:`, `:78` `RenewalOfferWindow>>opensOn`, `:46` `RenewalOfferWindow>>closesOn` | `RenewalOfferWindow.standardFor`, `forTerm`, `opensOn`, `closesOn` | `renewal_windows.csv`, `policy_terms.csv` |
+| B4.2 | The window never opens before the policy's own effective date. | A 400-day lead time on a 6-month term opens on the effective date. | `PersonalLines-Rating/RenewalOfferWindow.class.st:78` `RenewalOfferWindow>>opensOn` | `RenewalOfferWindow.opensOn` | `renewal_windows.csv` (`lead_days` = 400) |
+| B4.3 | The window is open on a date when `opensOn <= date <= closesOn`; it is closed on the expiration date. | Both ends inclusive. | `PersonalLines-Rating/RenewalOfferWindow.class.st:66` `RenewalOfferWindow>>isOpenOn:` | `RenewalOfferWindow.isOpenOn` | `renewal_windows.csv` (four `open_*` columns) |
+| B4.4 | Days until the window opens is 0 once it is open, otherwise `opensOn - date`. | Counted with A3.5, so leap days are included. | `PersonalLines-Rating/RenewalOfferWindow.class.st:52` `RenewalOfferWindow>>daysUntilOpeningFrom:` | `RenewalOfferWindow.daysUntilOpeningFrom` | `renewal_windows.csv` (`days_until_opening_from_effective`) |
 
 ### B5. Homeowners premium with valuable articles and deductible credit
 
 | # | Rule | Edge cases | Smalltalk | Java | Golden |
 |---|------|------------|-----------|------|--------|
-| B5.1 | Dwelling premium is `coverage / 1000 * 3.50`, rounded to cents. | Coverage 0 gives 0.00; negative coverage fails with `AssertionFailed`. | `PersonalLines-Rating/HomeownersPremiumCalculator.class.st` `HomeownersPremiumCalculator>>dwellingPremiumFor:`, `HomeownersPremiumCalculator class>>standard` | `HomeownersPremiumCalculator.dwellingPremium` | `homeowners_premiums.csv` (`dwelling_premium`), `invalid_inputs.csv` |
-| B5.2 | Valuable articles premium is `scheduledValue / 1000 * 12.50`, rounded to cents, with a minimum of 25.00 when anything is scheduled; nothing scheduled costs 0. | 1000 and 2000 both cost 25.00; 2001 costs 25.01. | `HomeownersPremiumCalculator.class.st` `HomeownersPremiumCalculator>>valuableArticlesPremiumFor:` | `HomeownersPremiumCalculator.valuableArticlesPremium` | `homeowners_premiums.csv` (`valuable_articles_premium`) |
-| B5.3 | Deductible credit is the (already rounded) dwelling premium times 0, 5, 12 or 20 percent for deductibles of 500, 1000, 2500 or 5000, rounded to cents. | Any other deductible fails with `ObjectNotFound`. | `HomeownersPremiumCalculator.class.st` `HomeownersPremiumCalculator>>deductibleCreditForDwelling:deductible:`, `creditPercentage:forDeductible:` | `HomeownersPremiumCalculator.deductibleCredit` | `homeowners_premiums.csv` (`deductible_credit`), `invalid_inputs.csv` |
-| B5.4 | Annual premium is dwelling premium minus deductible credit plus valuable articles premium; each component is rounded before combining. | Rounding each component first is what a legacy declarations page does; a port that rounds only the total would drift by a cent. | `HomeownersPremiumCalculator.class.st` `HomeownersPremiumCalculator>>annualPremiumForDwelling:valuableArticles:deductible:` | `HomeownersPremiumCalculator.annualPremium` | `homeowners_premiums.csv` (`annual_premium`) |
-| B5.5 | Term premium is `annual * termMonths / 12`, rounded to cents. | A 6-month term is half the annual, with half-cents rounded away from zero. | `HomeownersPremiumCalculator.class.st` `HomeownersPremiumCalculator>>termPremiumForDwelling:valuableArticles:deductible:over:` | `HomeownersPremiumCalculator.termPremium` | `homeowners_premiums.csv` (`six_month_premium`, `twelve_month_premium`) |
+| B5.1 | Dwelling premium is `coverage / 1000 * 3.50`, rounded to cents. | Coverage 0 gives 0.00; negative coverage fails with `AssertionFailed`. | `PersonalLines-Rating/HomeownersPremiumCalculator.class.st:82` `HomeownersPremiumCalculator>>dwellingPremiumFor:`, `:36` `HomeownersPremiumCalculator class>>standard` | `HomeownersPremiumCalculator.dwellingPremium` | `homeowners_premiums.csv` (`dwelling_premium`), `invalid_inputs.csv` |
+| B5.2 | Valuable articles premium is `scheduledValue / 1000 * 12.50`, rounded to cents, with a minimum of 25.00 when anything is scheduled; nothing scheduled costs 0. | 1000 and 2000 both cost 25.00; 2001 costs 25.01. | `PersonalLines-Rating/HomeownersPremiumCalculator.class.st:119` `HomeownersPremiumCalculator>>valuableArticlesPremiumFor:` | `HomeownersPremiumCalculator.valuableArticlesPremium` | `homeowners_premiums.csv` (`valuable_articles_premium`) |
+| B5.3 | Deductible credit is the (already rounded) dwelling premium times 0, 5, 12 or 20 percent for deductibles of 500, 1000, 2500 or 5000, rounded to cents. | Any other deductible fails with `ObjectNotFound`. | `PersonalLines-Rating/HomeownersPremiumCalculator.class.st:70` `HomeownersPremiumCalculator>>deductibleCreditForDwelling:deductible:`, `:64` `HomeownersPremiumCalculator>>creditPercentage:forDeductible:` | `HomeownersPremiumCalculator.deductibleCredit` | `homeowners_premiums.csv` (`deductible_credit`), `invalid_inputs.csv` |
+| B5.4 | Annual premium is dwelling premium minus deductible credit plus valuable articles premium; each component is rounded before combining. | Rounding each component first is what a legacy declarations page does; a port that rounds only the total would drift by a cent. | `PersonalLines-Rating/HomeownersPremiumCalculator.class.st:50` `HomeownersPremiumCalculator>>annualPremiumForDwelling:valuableArticles:deductible:` | `HomeownersPremiumCalculator.annualPremium` | `homeowners_premiums.csv` (`annual_premium`) |
+| B5.5 | Term premium is `annual * termMonths / 12`, rounded to cents. | A 6-month term is half the annual, with half-cents rounded away from zero. | `PersonalLines-Rating/HomeownersPremiumCalculator.class.st:101` `HomeownersPremiumCalculator>>termPremiumForDwelling:valuableArticles:deductible:over:` | `HomeownersPremiumCalculator.termPremium` | `homeowners_premiums.csv` (`six_month_premium`, `twelve_month_premium`) |
 
 ## Part C: what is in the equivalence oracle and what is not
 

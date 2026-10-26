@@ -25,7 +25,8 @@ graded against that answer key."
 
 - **Open**: `docs/modernization/RULE_CATALOG.md`, Part A, rows A2.5 and A3.5,
   then Part B.
-- **Say**: "Every rule is one sentence of English, its edge cases, and the
+- **Say**: "53 rules, 31 from the real library and 22 from the synthetic
+  package. Every rule is one sentence of English, its edge cases, and the
   file, line and selector it was read from. Nobody has to take the sentence
   on faith. Part B is a small synthetic rating package we added on top of
   the library: term, pro-rata, short-rate, renewal window, homeowners

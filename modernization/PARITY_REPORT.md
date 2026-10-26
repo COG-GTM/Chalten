@@ -20,6 +20,22 @@ dates. The numbers are from the final run recorded in
 | **Golden total** | | **2313** | **2313** | **0** | **0** |
 | REST facade smoke tests (`PolicyTermControllerTest`, not golden) | | 2 | 2 | 0 | 0 |
 
+Catalog rules covered by each golden file (rule IDs from
+`docs/modernization/RULE_CATALOG.md`, 53 rules: 31 in Part A, 22 in Part B):
+
+| Golden file | Catalog rules |
+|-------------|---------------|
+| `policy_terms.csv` | A4.1, B1.1, B1.2, B1.3, B1.4, B4.1 |
+| `cancellations.csv` | A3.8, B1.4, B1.5, B2.1, B2.2, B2.3, B3.2, B3.3, B3.4 |
+| `renewal_windows.csv` | B4.1, B4.2, B4.3, B4.4 |
+| `homeowners_premiums.csv` | B5.1, B5.2, B5.3, B5.4, B5.5 |
+| `chalten_core_dates.csv` | A1.1, A1.2, A2.1, A2.2, A2.4, A2.5, A2.6, A3.1, A3.2, A3.3, A3.4, A3.5, A3.7, A3.9 |
+| `invalid_inputs.csv` | A2.3, B1.1, B2.4, B3.1, B5.1, B5.3 |
+
+Every Part B rule is in the oracle. Part A rules not listed (A1.3 to A1.7,
+A2.7, A3.6, A3.10, A3.11, all of A5) are catalogued but not part of the
+oracle; see Part C of the catalog.
+
 Each golden *case* is one CSV row, and most rows assert several outputs
 (a cancellation row checks seven values), so the number of individual
 equalities checked is above 7,000.
