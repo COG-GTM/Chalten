@@ -2,3 +2,6 @@
 
 # Headless Pharo working directory for modernization/scripts/run_pharo.sh
 modernization/.pharo/
+
+# Maven build output for the Java port
+java/policy-term-service/target/

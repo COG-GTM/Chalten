@@ -1,7 +1,0 @@
-/home/ubuntu/repos/Chalten/java/policy-term-service/src/test/java/com/example/policyterm/api/PolicyTermControllerTest.java
-/home/ubuntu/repos/Chalten/java/policy-term-service/src/test/java/com/example/policyterm/parity/CancellationParityTest.java
-/home/ubuntu/repos/Chalten/java/policy-term-service/src/test/java/com/example/policyterm/parity/ChaltenCoreDateParityTest.java
-/home/ubuntu/repos/Chalten/java/policy-term-service/src/test/java/com/example/policyterm/parity/HomeownersPremiumParityTest.java
-/home/ubuntu/repos/Chalten/java/policy-term-service/src/test/java/com/example/policyterm/parity/InvalidInputParityTest.java
-/home/ubuntu/repos/Chalten/java/policy-term-service/src/test/java/com/example/policyterm/parity/PolicyTermParityTest.java
-/home/ubuntu/repos/Chalten/java/policy-term-service/src/test/java/com/example/policyterm/parity/RenewalWindowParityTest.java
