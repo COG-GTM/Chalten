@@ -30,7 +30,14 @@ bootstrap() {
   cp "$WORK_DIR/Pharo.image" "$WORK_DIR/Chalten.image"
   cp "$WORK_DIR/Pharo.changes" "$WORK_DIR/Chalten.changes"
   echo ">> loading Chalten + PersonalLines-Rating from $CHALTEN_SOURCE_DIR"
-  (cd "$WORK_DIR" && ./pharo Chalten.image st "$SCRIPT_DIR/load_chalten.st" 2>&1 | grep -E "Loaded -> |CHALTEN LOADED|Error|error" || true)
+  local load_log="$WORK_DIR/load.log"
+  (cd "$WORK_DIR" && ./pharo Chalten.image st "$SCRIPT_DIR/load_chalten.st" > "$load_log" 2>&1) || true
+  grep -E "Loaded -> |CHALTEN LOADED" "$load_log" || true
+  if ! grep -q "CHALTEN LOADED" "$load_log"; then
+    echo ">> bootstrap FAILED: the loader did not print CHALTEN LOADED (full log: $load_log)" >&2
+    grep -iE "error|fail|not understood" "$load_log" | head -20 >&2 || true
+    return 1
+  fi
 }
 
 versions() {

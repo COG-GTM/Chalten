@@ -1,6 +1,7 @@
 package com.example.policyterm.rating;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -61,14 +62,16 @@ public final class HomeownersPremiumCalculator {
     return Money.divideToCents(dwellingCoverage.multiply(dwellingRatePerThousand), THOUSAND);
   }
 
-  /** Derived from HomeownersPremiumCalculator>>valuableArticlesPremiumFor: : zero when nothing is scheduled, otherwise max(rounded value / 1000 * rate, minimum premium). */
+  /** Derived from HomeownersPremiumCalculator>>valuableArticlesPremiumFor: : zero when nothing is scheduled, otherwise max(rounded value / 1000 * rate, minimum premium); the minimum is compared as configured, unrounded, exactly as the Smalltalk does. */
   public BigDecimal valuableArticlesPremium(BigDecimal scheduledValue) {
     Money.requireNonNegative(scheduledValue, "Coverage amounts cannot be negative");
     if (scheduledValue.signum() == 0) {
       return Money.roundToCents(BigDecimal.ZERO);
     }
     BigDecimal premium = Money.divideToCents(scheduledValue.multiply(valuableArticlesRatePerThousand), THOUSAND);
-    return premium.max(Money.roundToCents(valuableArticlesMinimumPremium));
+    BigDecimal minimum = valuableArticlesMinimumPremium.setScale(
+        Math.max(2, valuableArticlesMinimumPremium.scale()), RoundingMode.UNNECESSARY);
+    return premium.max(minimum);
   }
 
   /** Derived from HomeownersPremiumCalculator>>deductibleCreditForDwelling:deductible: : dwelling premium * credit% / 100 rounded to cents; an unknown deductible raises ObjectNotFound. */

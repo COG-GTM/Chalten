@@ -98,6 +98,16 @@ read as a vendor claim:
    legacy code rather than from someone writing down what they believe it
    does.
 
+3. **One divergence the oracle could not see was caught in code review.**
+   `HomeownersPremiumCalculator>>valuableArticlesPremiumFor:` compares the
+   rounded premium with the configured minimum *unrounded*; the first Java
+   version rounded the minimum before comparing. Every golden row uses the
+   standard minimum of 25, so the oracle passed either way. The Java now
+   compares the minimum exactly as configured (only normalising its scale
+   to two decimals so `25` prints as `25.00`). The lesson for a real
+   engagement: the oracle proves the inputs you sampled, and a reviewer
+   reading the two methods side by side still earns their keep.
+
 ## What exact equality means here
 
 - Money: `BigDecimal` with scale 2 on both sides. `1225.00` and `1225.0`
