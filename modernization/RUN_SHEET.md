@@ -1,8 +1,8 @@
 # Presenter run sheet: legacy Smalltalk to Java, proven equivalent
 
 Six steps, about 12 minutes. Every link is a file in this PR, so the
-audience can open the same thing afterwards. Replace `PR_URL` with the pull
-request link once it exists.
+audience can open the same thing afterwards.
+PR: <https://github.com/COG-GTM/Chalten/pull/1>
 
 Opening line: "Nobody here is going to trust a converter. So we are not going
 to show one. We are going to show three things: the rules written down with
@@ -19,7 +19,7 @@ graded against that answer key."
   Pharo. Date subtraction is asymmetric and raises if you subtract the wrong
   way round. Month arithmetic has a wrap-around rule with a comment
   explaining it. These are the kinds of rules that get lost in a rewrite."
-- **Link**: `PR_URL/files` (filter on `source/Chalten-Core`).
+- **Link**: <https://github.com/COG-GTM/Chalten/pull/1/files> (filter on `source/Chalten-Core`).
 
 ## Step 2. The rule catalog with citations
 
@@ -31,7 +31,7 @@ graded against that answer key."
   the library: term, pro-rata, short-rate, renewal window, homeowners
   premium. It is labelled SYNTHETIC everywhere so nobody mistakes it for a
   product."
-- **Link**: `PR_URL/files` then `docs/modernization/RULE_CATALOG.md`.
+- **Link**: <https://github.com/COG-GTM/Chalten/pull/1/files> then `docs/modernization/RULE_CATALOG.md`.
 
 ## Step 3. The answer key comes from running the old code
 
@@ -59,7 +59,7 @@ graded against that answer key."
   to the last day of the month is there because the Smalltalk does it, and
   the comment says so. The REST endpoint and CLI are thin; the rules live in
   five classes that mirror the five Smalltalk classes."
-- **Link**: `PR_URL/files` then `java/policy-term-service/src/main/java`.
+- **Link**: <https://github.com/COG-GTM/Chalten/pull/1/files> then `java/policy-term-service/src/main/java`.
 
 ## Step 5. Grading the port against the answer key
 
@@ -83,7 +83,7 @@ graded against that answer key."
   is the same: point this at one package, get the catalog and the oracle,
   and decide with numbers in hand. Nothing here required the old system to be
   switched off."
-- **Link**: `PR_URL`.
+- **Link**: <https://github.com/COG-GTM/Chalten/pull/1>.
 
 ## If something goes wrong live
 
