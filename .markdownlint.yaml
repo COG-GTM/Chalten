@@ -1,0 +1,6 @@
+# Default markdownlint rules, except that tables and code blocks may exceed 80 characters
+# (the modernization rule catalog cites file paths and selectors inline).
+MD013:
+  line_length: 80
+  tables: false
+  code_blocks: false

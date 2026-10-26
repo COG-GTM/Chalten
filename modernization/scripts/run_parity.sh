@@ -4,7 +4,11 @@
 set -uo pipefail
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 MODULE="$REPO_ROOT/java/policy-term-service"
-export JAVA_HOME="${JAVA_HOME:-/usr/lib/jvm/java-17-openjdk-amd64}"
+# The port targets Java 17; prefer a local JDK 17 when present so the run matches the report.
+if [ -d /usr/lib/jvm/java-17-openjdk-amd64 ]; then
+  export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+fi
+export JAVA_HOME="${JAVA_HOME:?set JAVA_HOME to a JDK 17 installation}"
 echo "# Parity run $(date -u +%Y-%m-%dT%H:%M:%SZ)"
 echo "java: $("$JAVA_HOME/bin/java" -version 2>&1 | head -1)"
 echo "golden: $(cat "$REPO_ROOT"/modernization/golden/*.csv | grep -c . ) lines in $(ls "$REPO_ROOT"/modernization/golden/*.csv | wc -l) files (headers included)"
