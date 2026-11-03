@@ -85,6 +85,23 @@ ShortRateCancellationTableTest >> testMinimumRetainedPremiumAppliesWhenBandAmoun
 ]
 
 { #category : 'tests' }
+ShortRateCancellationTableTest >> testMinimumRetainedPremiumAppliesToZeroPercentBand [
+
+  | term table |
+
+  "A configured 0% band is not a flat cancellation: once a day is in force the minimum still applies."
+  term := PolicyTerm twelveMonthsFrom: january first , 2025.
+  table := ShortRateCancellationTable new
+             addBandUpTo: 100 retaining: 0;
+             retainingAtLeast: 25;
+             yourself.
+  self
+    assert: ( table retainedPercentageFor: term cancelledOn: january second , 2025 ) equals: 0;
+    assert: ( table earnedPremiumOf: 200 for: term cancelledOn: january second , 2025 ) equals: 25;
+    assert: ( table earnedPremiumOf: 200 for: term cancelledOn: january first , 2025 ) equals: 0
+]
+
+{ #category : 'tests' }
 ShortRateCancellationTableTest >> testMinimumRetainedPremiumBoundary [
 
   | term table |

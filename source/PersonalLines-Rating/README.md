@@ -16,7 +16,7 @@ rates, tables or practices. Every class comment repeats this notice.
 | `RenewalOfferWindow` | Opens 45 days (configurable) before expiration, never before inception; closes on the last date in force |
 | `HomeownersPremiumCalculator` | Dwelling and valuable articles premium, deductible credit, annual and term premium |
 
-Tests live in `PersonalLines-Rating-Tests` (35 SUnit tests, subclasses of
+Tests live in `PersonalLines-Rating-Tests` (36 SUnit tests, subclasses of
 `ChaltenTest`).
 
 ## Style notes

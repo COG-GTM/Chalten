@@ -72,8 +72,8 @@ ShortRateCancellationTable >> earnedPremiumOf: aWrittenPremium for: aPolicyTerm 
 
   | retainedPercentage |
 
+  ( aPolicyTerm daysInForceAt: aGregorianDate ) isZero then: [ ^ 0 ].
   retainedPercentage := self retainedPercentageFor: aPolicyTerm cancelledOn: aGregorianDate.
-  retainedPercentage isZero then: [ ^ 0 ].
   ^ ( ProRataEarnedPremiumCalculator roundToCents: aWrittenPremium * retainedPercentage / 100 )
     max: ( ProRataEarnedPremiumCalculator roundToCents: ( minimumRetainedPremium min: aWrittenPremium ) )
 ]
