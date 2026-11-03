@@ -8,12 +8,17 @@ elapsed (upper bound, inclusive) and the percentage of written premium retained.
 Lookup rule: the first band whose upper bound is greater than or equal to the exact
 percentage of the term elapsed applies. Zero days in force is a flat cancellation
 and retains nothing, regardless of the first band.
+
+Minimum retained premium: once any day is in force, the short-rate earned premium is
+never less than the table's minimum retained premium (25.00 in the standard table),
+capped at the written premium. A flat cancellation still retains nothing.
 "
 Class {
 	#name : 'ShortRateCancellationTable',
 	#superclass : 'Object',
 	#instVars : [
-		'bands'
+		'bands',
+		'minimumRetainedPremium'
 	],
 	#category : 'PersonalLines-Rating',
 	#package : 'PersonalLines-Rating'
@@ -49,6 +54,7 @@ ShortRateCancellationTable class >> standard [
       addBandUpTo: 90 retaining: 97;
       addBandUpTo: 95 retaining: 99;
       addBandUpTo: 100 retaining: 100;
+      retainingAtLeast: 25;
       yourself
 ]
 
@@ -66,14 +72,23 @@ ShortRateCancellationTable >> earnedPremiumOf: aWrittenPremium for: aPolicyTerm 
 
   | retainedPercentage |
 
+  ( aPolicyTerm daysInForceAt: aGregorianDate ) isZero then: [ ^ 0 ].
   retainedPercentage := self retainedPercentageFor: aPolicyTerm cancelledOn: aGregorianDate.
-  ^ ProRataEarnedPremiumCalculator roundToCents: aWrittenPremium * retainedPercentage / 100
+  ^ ( ProRataEarnedPremiumCalculator roundToCents: aWrittenPremium * retainedPercentage / 100 )
+    max: ( ProRataEarnedPremiumCalculator roundToCents: ( minimumRetainedPremium min: aWrittenPremium ) )
 ]
 
 { #category : 'initialization' }
 ShortRateCancellationTable >> initialize [
 
-  bands := OrderedCollection new
+  bands := OrderedCollection new.
+  minimumRetainedPremium := 0
+]
+
+{ #category : 'accessing' }
+ShortRateCancellationTable >> minimumRetainedPremium [
+
+  ^ minimumRetainedPremium
 ]
 
 { #category : 'calculating' }
@@ -86,6 +101,15 @@ ShortRateCancellationTable >> penaltyOf: aWrittenPremium for: aPolicyTerm cancel
   proRata := ProRataEarnedPremiumCalculator for: aPolicyTerm.
   ^ ( self earnedPremiumOf: aWrittenPremium for: aPolicyTerm cancelledOn: aGregorianDate )
     - ( proRata earnedPremiumOf: aWrittenPremium cancelledOn: aGregorianDate )
+]
+
+{ #category : 'configuring' }
+ShortRateCancellationTable >> retainingAtLeast: aMinimumRetainedPremium [
+
+  AssertionChecker
+    enforce: [ aMinimumRetainedPremium >= 0 ]
+    because: 'The minimum retained premium cannot be negative'.
+  minimumRetainedPremium := aMinimumRetainedPremium
 ]
 
 { #category : 'calculating' }
