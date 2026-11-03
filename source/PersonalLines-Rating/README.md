@@ -12,11 +12,11 @@ rates, tables or practices. Every class comment repeats this notice.
 |-------|----------------|
 | `PolicyTerm` | 6 or 12 month term from an effective date; expiration clamped to the last day of a short anniversary month; days in force at a date |
 | `ProRataEarnedPremiumCalculator` | Earned and unearned premium on cancellation, exact fraction rounded once to cents |
-| `ShortRateCancellationTable` | 20-band short-rate table keyed by percent of term elapsed; penalty versus pro-rata |
+| `ShortRateCancellationTable` | 20-band short-rate table keyed by percent of term elapsed; minimum retained premium (25.00 standard, capped at written premium, not applied to flat cancellations); penalty versus pro-rata |
 | `RenewalOfferWindow` | Opens 45 days (configurable) before expiration, never before inception; closes on the last date in force |
 | `HomeownersPremiumCalculator` | Dwelling and valuable articles premium, deductible credit, annual and term premium |
 
-Tests live in `PersonalLines-Rating-Tests` (29 SUnit tests, subclasses of
+Tests live in `PersonalLines-Rating-Tests` (35 SUnit tests, subclasses of
 `ChaltenTest`).
 
 ## Style notes
